@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    command: 'node ./src/index.js'
+    ports:
+      - "8080:8080"
+    environment:
+      - ENV=${ENV}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - MONGO_URI=${MONGO_URI}
+  
+  consumer:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    command: 'node ./src/consumer.js'
+    environment:
+      - ENV=${ENV}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - MONGO_URI=${MONGO_URI}
+  
+  frontend:
+    depends_on:
+      - backend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - REACT_APP_PROD_BASE_API=http://localhost:8080   # Change it if needed with backend's origin
+    ports:
+      - 1330:80   # Change it if needed to frontend port <hostport:containerport>
+    environment:
+      NODE_ENV: production
+
+  reverse:
+    depends_on:
+      - backend
+      - frontend
+    container_name: reverse
+    hostname: reverse
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:          # <path/local>:<path/in/container>
+      - ./nginx_logs:/var/log/nginx
+      - ./nginx/certs:/etc/nginx/certs
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/includes:/etc/nginx/includes
+      - ./nginx/www:/var/www/html

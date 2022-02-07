@@ -1,5 +1,6 @@
 password.h
 .env
+.env.*
 node_modules/
 venv/
 data/
