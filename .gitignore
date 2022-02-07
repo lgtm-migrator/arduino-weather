@@ -1,0 +1,9 @@
+password.h
+.env
+node_modules/
+venv/
+data/
+*.log
+log
+nginx_logs/
+certs/
