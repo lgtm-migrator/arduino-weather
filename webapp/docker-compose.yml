@@ -17,6 +17,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     command: 'node ./src/consumer.js'
+    restart: on-failure
     environment:
       - ENV=${ENV}
       - MQTT_PASSWORD=${MQTT_PASSWORD}
