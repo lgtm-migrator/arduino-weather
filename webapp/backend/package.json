@@ -31,6 +31,6 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "2.0.15"
   }
 }
