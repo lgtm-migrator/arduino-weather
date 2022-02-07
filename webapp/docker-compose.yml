@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   backend:
+    container_name: backend
     build: 
       context: ./backend
       dockerfile: Dockerfile
@@ -24,6 +25,7 @@ services:
       - MONGO_URI=${MONGO_URI}
   
   frontend:
+    container_name: frontend
     depends_on:
       - backend
     build:
